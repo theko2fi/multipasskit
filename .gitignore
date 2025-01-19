@@ -1,3 +1,4 @@
 __pycache__/
 env/
-multipass_sdk/__pycache__
+sdk/__pycache__
+multipass_kit.egg-info/
