@@ -1,5 +1,5 @@
 import subprocess
-from multipasskit.sdk.haikunator import Haikunator
+from haikunator import Haikunator
 from shlex import split as shlexsplit
 import json
 from multipasskit.sdk.errors import *
