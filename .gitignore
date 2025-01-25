@@ -2,3 +2,9 @@ __pycache__/
 env/
 sdk/__pycache__
 multipass_kit.egg-info/
+env
+venv/
+.vscode
+dist
+multipasskit.egg-info
+brouillon
