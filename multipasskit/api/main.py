@@ -5,6 +5,7 @@ from multipasskit.api.async_multipass import  app as celery_app
 from pydantic import BaseModel
 import uvicorn
 from celery.result import AsyncResult
+from multipasskit.api.celerymultipass import celery_app
 
 API_PREFIX = "/api"
 VERSION = "v0.1.0"

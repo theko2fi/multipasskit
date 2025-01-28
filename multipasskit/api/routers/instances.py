@@ -2,7 +2,7 @@ from fastapi import  APIRouter
 from typing import Union
 from multipasskit.api.models import instance, mount
 from multipasskit.sdk.multipass import MultipassClientSDK
-from multipasskit.api.async_multipass import AsyncMultipassClient, AsyncMultipassVM
+from multipasskit.api.celerymultipass import AsyncMultipassClient, AsyncMultipassVM
 
 router = APIRouter(prefix='/instances', tags=["instances"])
 
@@ -36,8 +36,8 @@ def delete_instance(name: str, purge: bool = False):
 
 @router.post("/{name}/stop")
 def stop_instance(name: str):
-    vm = MultipassClientSDK().get_vm(vm_name=name)
-    return vm.stop()
+    return MultipassClientSDK().get_vm(vm_name=name).stop()
+    #return vm.stop()
 
 @router.post("/{name}/start")
 def start_instance(name: str):
@@ -52,7 +52,7 @@ def restart_instance(name: str):
 def launch_instance(data: instance.Instance):
     vm_data = data.dict()
     vm_data["vm_name"] = vm_data.pop("name")  # Renaming 'name' back to 'vm_name'*
-    task = async_multipass_client.create_vm_task.delay(**vm_data)
+    task = async_multipass_client.launch_task.delay(**vm_data)
     return {"task_id": task.id, "message": "VM creation task submitted"}
 
 @router.put("/{name}/mount")
