@@ -13,7 +13,7 @@ description = """
 This API allows you to manage Multipass instances and resources in a simple, programmatic way using conventional HTTP requests.
 """
 
-app = FastAPI(description=description)
+app = FastAPI(description=description, openapi_url=f"{API_PREFIX}/{VERSION}/openapi.json")
 
 app.include_router(instances.router, prefix=f'{API_PREFIX}/{VERSION}')
 app.include_router(config.router, prefix=f'{API_PREFIX}/{VERSION}')
@@ -40,4 +40,4 @@ async def middleware(request: Request, call_next):
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=9990, reload=True, timeout_keep_alive=120)
+    uvicorn.run("multipasskit.api.main:app", host="0.0.0.0", port=9990, reload=True, timeout_keep_alive=120)
