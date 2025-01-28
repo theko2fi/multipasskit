@@ -40,3 +40,6 @@ api = ["celery[redis]==5.4.0"]
 
 [tool.setuptools.packages.find]
 include = ["multipasskit", "multipasskit.*"]
+
+[project.scripts]
+multipasskit = "multipasskit.api.cli:cli"
