@@ -26,7 +26,7 @@ classifiers = [
 ]
 dependencies = [
     "haikunator==2.1.0",
-    "celery==5.4.0"
+    "click==8.1.8",
 ]
 
 [project.urls]
@@ -36,7 +36,11 @@ Tracker = "https://github.com/theko2fi/multipasskit/issues"
 LinkedIn = "https://www.linkedin.com/in/kenneth-koffi-6b1218178"
 
 [project.optional-dependencies]
-api = ["celery[redis]==5.4.0"]
+api = [
+    "celery[redis]==5.4.0",
+    "uvicorn==0.27.1",
+    "fastapi==0.109.2",
+]
 
 [tool.setuptools.packages.find]
 include = ["multipasskit", "multipasskit.*"]
