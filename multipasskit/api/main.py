@@ -1,7 +1,6 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
-from routers import instances, config
-from multipasskit.api.async_multipass import  app as celery_app
+from multipasskit.api.routers import instances, config
 from pydantic import BaseModel
 import uvicorn
 from celery.result import AsyncResult
