@@ -2,7 +2,6 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from multipasskit.api.routers import instances, config
 from pydantic import BaseModel
-import uvicorn
 from celery.result import AsyncResult
 from multipasskit.api.celerymultipass import celery_app
 from multipasskit.api.config import settings
@@ -40,7 +39,3 @@ async def middleware(request: Request, call_next):
         return response
     except Exception as e:
         return JSONResponse(status_code=400, content={"message": str(e)})
-
-
-if __name__ == "__main__":
-    uvicorn.run("multipasskit.api.main:app", host="0.0.0.0", port=9990, reload=True, timeout_keep_alive=120)
