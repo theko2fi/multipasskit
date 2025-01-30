@@ -4,6 +4,7 @@ from multipasskit.api.celerymultipass import celery_app
 import uvicorn
 from pathlib import Path
 import shutil
+import multiprocessing
 
 
 def detect_init_system():
@@ -66,12 +67,22 @@ def runapi(host, port, reload):
     help="Log destination; defaults to stderr",
     type=click.Path()
 )
-def runcelery(detach, loglevel=None, logfile=None):
+@click.option(
+    "--concurrency",
+    "-c",
+    help="Number of processes doing the work",
+    type=int,
+    default= multiprocessing.cpu_count() * 2,
+    show_default=True
+)
+def runcelery(detach, loglevel=None, logfile=None, concurrency=None):
     args = ['worker']
     if logfile:
         args.append(f"--logfile={logfile}")
     if loglevel:
         args.append(f"--loglevel={loglevel}")
+    if concurrency:
+        args.append(f"--concurrency={concurrency}")
     if detach:
         args.append("--detach")
 
