@@ -89,10 +89,9 @@ def runcelery(detach, loglevel=None, logfile=None, concurrency=None):
     active_workers = celery_app.control.inspect().active()
     if active_workers == None:
         try:
-            celery_app.worker_main(argv=args)
+            celery_app.start(argv=args)
         except Exception as e:
-            click.echo(e.output)
-            click.echo(e.stderr)
+            click.echo(f"Failed to start Celery worker: {str(e)}")
     else:
         click.echo("Celery worker is already running")
 
