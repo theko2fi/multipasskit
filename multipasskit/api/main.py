@@ -24,9 +24,9 @@ class TaskOut(BaseModel):
     id: str
     status: str
 
-@app.get("/status")
-async def status(task_id: str) -> TaskOut:
-    r = celery_app.AsyncResult(task_id)
+@app.get("/tasks/{id}/status", tags=["celery"], response_model=TaskOut)
+async def status(id: str) -> TaskOut:
+    r = celery_app.AsyncResult(id)
     return _to_task_out(r)
 
 def _to_task_out(r: AsyncResult) -> TaskOut:
