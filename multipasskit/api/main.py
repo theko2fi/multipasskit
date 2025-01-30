@@ -5,18 +5,21 @@ from pydantic import BaseModel
 import uvicorn
 from celery.result import AsyncResult
 from multipasskit.api.celerymultipass import celery_app
+from multipasskit.api.config import settings
 
 API_PREFIX = "/api"
-VERSION = "v0.1.0"
 
 description = """
 This API allows you to manage Multipass instances and resources in a simple, programmatic way using conventional HTTP requests.
 """
 
-app = FastAPI(description=description, openapi_url=f"{API_PREFIX}/{VERSION}/openapi.json")
+app = FastAPI(
+    title=settings.APP_NAME,
+    description=description
+)
 
-app.include_router(instances.router, prefix=f'{API_PREFIX}/{VERSION}')
-app.include_router(config.router, prefix=f'{API_PREFIX}/{VERSION}')
+app.include_router(instances.router, prefix=f'{API_PREFIX}/{settings.MULTIPASS_API_VERSION}')
+app.include_router(config.router, prefix=f'{API_PREFIX}/{settings.MULTIPASS_API_VERSION}')
 
 class TaskOut(BaseModel):
     id: str

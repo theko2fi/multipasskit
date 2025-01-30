@@ -1,14 +1,11 @@
 from celery.app import Celery
-import os
 from multipasskit.sdk.multipass import MultipassClientSDK
-
-redis_url = os.getenv("REDIS_URL", "redis://localhost:6379")
-
+from multipasskit.api.config import settings
 
 celery_app = Celery(
     "multipasskit",
-    broker=redis_url,
-    backend=redis_url,
+    broker=settings.REDIS_URL,
+    backend=settings.REDIS_URL,
     imports=["multipasskit.sdk.multipass"],
     )
 
