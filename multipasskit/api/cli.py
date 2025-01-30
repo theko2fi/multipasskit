@@ -39,8 +39,8 @@ def cli():
     pass
 
 @cli.command(name="run-api")
-@click.option("--port", "-p", default=8080, type=int, help="Server port (default: 8080)")
-@click.option("--host", "-h", default="0.0.0.0", help="Server hostname or IP address.")
+@click.option("--port", "-p", default=9990, type=int, help="Server port", show_default=True)
+@click.option("--host", "-h", default="0.0.0.0", help="Server hostname or IP address.", show_default=True)
 @click.option("--reload", default=False, is_flag=True, help="Reload on changes")
 def runapi(host, port, reload):
     click.echo('Starting API server...')
