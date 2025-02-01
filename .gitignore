@@ -9,3 +9,4 @@ dist
 multipasskit.egg-info
 brouillon
 pypiserver.sh
+database.db
