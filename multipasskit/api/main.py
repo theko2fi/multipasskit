@@ -5,7 +5,6 @@ from pydantic import BaseModel
 from celery.result import AsyncResult
 from multipasskit.api.celerymultipass import celery_app
 from multipasskit.api.config import settings
-from multipasskit.api.auth import  oauth2_scheme
 from multipasskit.api.db import init_db
 from fastapi.security import OAuth2PasswordBearer
 
