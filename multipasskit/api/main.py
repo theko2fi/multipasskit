@@ -18,12 +18,20 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f'{API_PREFIX}/{settings.MULTIPASS
 
 app = FastAPI(
     title=settings.APP_NAME,
+    openapi_url=f"{API_PREFIX}/{settings.MULTIPASS_API_VERSION}/openapi.json",
     description=description
 )
 
 api_router = APIRouter()
-app.include_router(instances.router, prefix=f'{API_PREFIX}/{settings.MULTIPASS_API_VERSION}')
-app.include_router(config.router, prefix=f'{API_PREFIX}/{settings.MULTIPASS_API_VERSION}')
+
+api_router.include_router(
+    instances.router,
+    dependencies=[Depends(oauth2_scheme)]
+)
+api_router.include_router(
+    config.router,
+    dependencies=[Depends(oauth2_scheme)]
+)
 
 api_router.include_router(
     login.router
