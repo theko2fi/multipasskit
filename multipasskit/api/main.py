@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Request, APIRouter, Depends
 from fastapi.responses import JSONResponse
-from multipasskit.api.routers import instances, config, login
+from multipasskit.api.routers import instances, config, login, images
 from pydantic import BaseModel
 from celery.result import AsyncResult
 from multipasskit.api.celerymultipass import celery_app
@@ -29,6 +29,11 @@ api_router.include_router(
 )
 api_router.include_router(
     config.router,
+    dependencies=[Depends(oauth2_scheme)]
+)
+
+api_router.include_router(
+    images.router,
     dependencies=[Depends(oauth2_scheme)]
 )
 
