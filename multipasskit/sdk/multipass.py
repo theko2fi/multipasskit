@@ -162,6 +162,17 @@ class MultipassClientSDK:
             raise Exception("Multipass find command failed: {0}".format(stderr))
         return json.loads(stdout)
 
+    def networks(self):
+        cmd = [self.cmd, "networks", "--format", "json"]
+        out = subprocess.Popen(cmd, 
+           stdout=subprocess.PIPE, 
+           stderr=subprocess.STDOUT)
+        stdout,stderr = out.communicate()
+        exitcode = out.wait()
+        if(not exitcode == 0):
+            raise Exception("Multipass networks command failed: {0}".format(stderr))
+        return json.loads(stdout)
+
     def mount(self, src, target, mount_type='classic', uid_maps=[], gid_maps=[]):
         mount_options = ["--type", mount_type]
         for uid_map in uid_maps:
