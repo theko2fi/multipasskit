@@ -5,7 +5,7 @@ import secrets
 class Settings(BaseSettings):
     APP_NAME: str = "Multipass API"
     MULTIPASS_API_VERSION: str = "v0.1.0"
-    REDIS_URL: str = "redis://localhost:6379"
+    REDIS_URL: str = "redis://127.0.0.1:6379"
     # to get a string like this run:
     # openssl rand -hex 32
     SECRET_KEY: str = secrets.token_urlsafe(32)
