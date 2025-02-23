@@ -87,7 +87,7 @@ def runcelery(detach, loglevel=None, logfile=None, concurrency=None):
         args.append("--detach")
 
     active_workers = celery_app.control.inspect().active()
-    if active_workers == None:
+    if not active_workers:
         try:
             celery_app.start(argv=args)
         except Exception as e:

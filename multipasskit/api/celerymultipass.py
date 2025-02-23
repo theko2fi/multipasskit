@@ -7,7 +7,6 @@ celery_app = Celery(
     broker=settings.REDIS_URL,
     backend=settings.REDIS_URL,
     imports=["multipasskit.sdk.multipass"],
-    worker_pool="gevent",
     )
 
 
