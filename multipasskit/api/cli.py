@@ -4,7 +4,6 @@ from multipasskit.api.celerymultipass import celery_app
 import uvicorn
 from pathlib import Path
 import shutil
-import multiprocessing
 
 
 def detect_init_system():
@@ -72,11 +71,10 @@ def runapi(host, port, reload):
     "-c",
     help="Number of processes doing the work",
     type=int,
-    default= multiprocessing.cpu_count() * 2,
     show_default=True
 )
 def runcelery(detach, loglevel=None, logfile=None, concurrency=None):
-    args = ['worker']
+    args = ['celery', '--app=multipasskit.api.celerymultipass', 'worker']
     if logfile:
         args.append(f"--logfile={logfile}")
     if loglevel:
@@ -89,7 +87,7 @@ def runcelery(detach, loglevel=None, logfile=None, concurrency=None):
     active_workers = celery_app.control.inspect().active()
     if not active_workers:
         try:
-            celery_app.start(argv=args)
+            subprocess.run(args, check=True)
         except Exception as e:
             click.echo(f"Failed to start Celery worker: {str(e)}")
     else:
