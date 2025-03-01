@@ -52,7 +52,7 @@ class TaskOut(BaseModel):
     id: str
     status: str
 
-@app.get("/tasks/{id}/status", tags=["celery"], response_model=TaskOut)
+@app.get("/api/v0.1.0/tasks/{id}/status", tags=["celery"], response_model=TaskOut)
 async def status(id: str) -> TaskOut:
     r = celery_app.AsyncResult(id)
     return _to_task_out(r)
