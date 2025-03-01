@@ -1,4 +1,4 @@
-from fastapi import  APIRouter
+from fastapi import  APIRouter, File, Form, UploadFile
 from typing import Union, Optional
 from multipasskit.api.models import instance, mount
 from multipasskit.sdk.multipass import MultipassClientSDK
@@ -6,6 +6,7 @@ from multipasskit.api.celerymultipass import AsyncMultipassClient, AsyncMultipas
 import subprocess
 import shlex
 from pydantic import BaseModel
+from typing_extensions import Annotated
 
 class ExecCommand(BaseModel):
     cmd: str
@@ -81,6 +82,23 @@ def mount_directory(name: str, mount: mount.Mount):
         uid_maps=mount.uid_map,
         gid_maps=mount.gid_map
     )
+
+@router.post("/{name}/transfer")
+def transfer(name: str, source: Annotated[UploadFile, File()], destination: Annotated[str, Form()]):
+    try:
+        # Read the content of the UploadFile object
+        file_content = source.file.read()
+        
+        # Use subprocess to transfer the file content
+        transfer = subprocess.run(
+            ['multipass', 'transfer', '-', f'{name}:{destination}'],
+            input=file_content,
+            check=True,
+            capture_output=True
+        )
+        return {"return_code": transfer.returncode, "stdout": transfer.stdout.decode(), "stderr": transfer.stderr.decode()}
+    except subprocess.CalledProcessError as e:
+        return {"return_code": e.returncode, "stdout": e.stdout.decode(), "stderr": e.stderr.decode()}
 
 @router.delete("/{name}/umount")
 def unmount_directory_from_instance(name: str, target: Union[str, None] = None):
