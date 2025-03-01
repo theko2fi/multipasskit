@@ -36,8 +36,8 @@ def delete_instance(name: str, purge: bool = False):
 
 @router.post("/{name}/stop")
 def stop_instance(name: str):
-    return MultipassClientSDK().get_vm(vm_name=name).stop()
-    #return vm.stop()
+    task = AsyncMultipassVM.stop_task.delay(name)
+    return {"task_id": task.id, "message": "VM stopping task submitted"}
 
 @router.post("/{name}/start")
 def start_instance(name: str):
@@ -46,7 +46,8 @@ def start_instance(name: str):
 
 @router.post("/{name}/restart")
 def restart_instance(name: str):
-    return MultipassClientSDK().get_vm(vm_name=name).restart()
+    task = AsyncMultipassVM.restart_task.delay(name)
+    return {"task_id": task.id, "message": "VM restarting task submitted"}
 
 @router.post("/")
 def launch_instance(data: instance.Instance):

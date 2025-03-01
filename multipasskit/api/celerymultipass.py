@@ -17,6 +17,15 @@ class AsyncMultipassVM():
     @celery_app.task
     def start_task(name):
         return manager.get_vm(name).start()
+    
+    @celery_app.task
+    def stop_task(name):
+        return manager.get_vm(name).stop()
+    
+    @celery_app.task
+    def restart_task(name):
+        return manager.get_vm(name).restart()
+    
 
 class AsyncMultipassClient():
     """
