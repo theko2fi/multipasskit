@@ -70,7 +70,7 @@ def restart_instance(name: str):
 @router.post("/")
 def launch_instance(data: instance.Instance):
     vm_data = data.dict()
-    vm_data["vm_name"] = vm_data.pop("name")  # Renaming 'name' back to 'vm_name'*
+    vm_data["vm_name"] = vm_data.pop("name")  # Renaming 'name' back to 'vm_name'
     task = async_multipass_client.launch_task.delay(**vm_data)
     return {"task_id": task.id, "message": "VM creation task submitted"}
 
