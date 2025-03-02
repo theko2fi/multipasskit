@@ -48,6 +48,10 @@ def list_instance_snaphots(name: str):
 def recover_instance(name: str):
     return MultipassClientSDK().recover(vm_name=name)
 
+@router.delete("/purge")
+def purge_deleted_instances():
+    return MultipassClientSDK().purge()
+
 @router.delete("/{name}")
 def delete_instance(name: str, purge: bool = False):
     return MultipassClientSDK().get_vm(vm_name=name).delete(purge=purge)
