@@ -75,7 +75,7 @@ class MultipassVM_by_SDK:
         exitcode = out.wait()
         if(exitcode != 0):
             raise Exception("Multipass exec command failed: {0}".format(stderr.decode(encoding="utf-8")))
-        return stdout, stderr
+        return exitcode, stdout, stderr
 
     def stop(self):
         cmd = [self.cmd, "stop", self.vm_name]
