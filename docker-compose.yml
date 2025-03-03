@@ -1,0 +1,31 @@
+services:
+  api:
+    container_name: "multipasskit-api"
+    build: .
+    ports:
+      - "9990:9990"
+    environment:
+      REDIS_URL: "redis://multipasskitredis:6379"
+      CELERY_BROKER_URL: "redis://multipasskitredis:6379"
+      CELERY_RESULT_BACKEND: "redis://multipasskitredis:6379"
+    volumes:
+      - /usr/bin/multipass:/snap/bin/multipass
+    depends_on:
+      - celery
+  celery:
+    container_name: "multipasskit-celery"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: multipasskit run-celery
+    environment:
+      REDIS_URL: "redis://multipasskitredis:6379"
+      CELERY_BROKER_URL: "redis://multipasskitredis:6379"
+      CELERY_RESULT_BACKEND: "redis://multipasskitredis:6379"
+    volumes:
+      - /usr/bin/multipass:/snap/bin/multipass
+    depends_on:
+      - multipasskitredis
+  multipasskitredis:
+    container_name: "multipasskit-redis"
+    image: "redis:7.2.4"
